@@ -1,2 +1,2 @@
-# gif-lelo
+# GIF Lelo
 A simple GIF searcher
