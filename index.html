@@ -69,26 +69,23 @@
         const img = document.querySelector('img');
         const button = document.querySelector('button');
         const inp = document.querySelector('input');
-        function getGif(){
-            let input = inp.value == '' ? 'cats' : inp.value ;
-            inp.value = '';
-            fetch(`https://api.giphy.com/v1/gifs/translate?api_key=SA5LeTVtgRiIdurzTOcS6qePLhr0gIxO&s=${input}`, {mode: 'cors'})
-            .then(function(response) {
-                return response.json();
-            })
-            .then((response) => {
-                console.log(response);
-                if(response.meta.status == 200)
-                    img.src = response.data.images.original.url;
+        async function getGif() {
+            try {
+                let input = inp.value == '' ? 'cats' : inp.value ;
+                inp.value = '';
+                const response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=SA5LeTVtgRiIdurzTOcS6qePLhr0gIxO&s=${input}`, {mode: 'cors'});
+                const gif = await response.json();
+                console.log(gif);
+                if(gif.meta.status == 200)
+                    img.src = gif.data.images.original.url;
                 else {
                     throw new Error("Error in getting data!!");
                     img.src = "https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif";
                 }
-            })
-            .catch((response) => {
-                throw new Error("Error in getting data!!");
+            } catch(error) {
+                throw new Error(error);
                 img.src = "https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif";
-            })
+            }
         }
         button.addEventListener('click', getGif);
         inp.addEventListener('keydown', (e) => {
